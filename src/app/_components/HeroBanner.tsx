@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Button from "./Button";
 
 const HeroBanner = () => {
   const backgroundStyle = {
@@ -10,10 +11,8 @@ const HeroBanner = () => {
       <div className="flex justify-around items-center h-96">
         <div>
           <h1 className="text-5xl	 font-bold">Чіп Чендж</h1>
-          <p className="text-sm mt-5 font-medium	text-2xl">Обмінник валют - навчальний</p>
-          <button className="bg-white	mt-5 text-gray-600 py-2 px-4 rounded hover:bg-blue-200 focus:outline-none focus:shadow-outline	 text-lg	px-5">
-            Конвертер валют
-          </button>
+          <p className="text-xl	 mt-5 font-medium	">Обмінник валют - навчальний</p>
+          <Button text="Конвертер валют" style="bg-white text-gray-600" />
         </div>
         <div className="flex items-center">
           <Image
