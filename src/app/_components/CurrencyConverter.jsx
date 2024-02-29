@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import ConvertBlock from "./ConvertBlock";
 
 const CurrencyConverter = ({ rates, date, history, setHistory }) => {
-  console.log("update");
   const today = new Date();
   const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const maxDate = today.toISOString().split("T")[0];
