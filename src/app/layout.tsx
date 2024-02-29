@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
+import HeroBanner from "./_components/HeroBanner";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html className={roboto.className}  lang="en">
       <body className="h-full mx-auto max-w-screen-xl">
         <Header />
+        <HeroBanner />
         {children}
         <Footer /> 
       </body>
