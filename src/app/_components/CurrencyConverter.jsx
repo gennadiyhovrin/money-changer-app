@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import ConvertBlock from "./ConvertBlock";
 
 const CurrencyConverter = ({ rates, date, history, setHistory }) => {
- 
-
+  console.log("update");
   const today = new Date();
   const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const maxDate = today.toISOString().split("T")[0];
@@ -18,11 +17,6 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
     currencyTo: "EUR",
     date: date,
   };
-  // if (typeof window !== "undefined") {
-  //   if (localStorage.getItem("convertData")) {
-  //     data = { ...JSON.parse(localStorage.getItem("convertData")) };
-  //   }
-  // }
 
   const router = useRouter();
 
@@ -30,8 +24,6 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
 
   const [trigger, setTrigger] = useState(false);
 
-  
-  
   useEffect(() => {
     if (convertData.date !== date) {
       router.push(`/converter/${convertData.date}`);
@@ -65,7 +57,7 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("convertData"));
     if (items) {
-      setConvertData({...items, date: date});
+      setConvertData({ ...items, date: date });
     }
   }, []);
 
@@ -82,7 +74,6 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
   const convertCurrency = () => {
     setHistory([...history, convertData]);
     localStorage.setItem("history", JSON.stringify([...history, convertData]));
-  
   };
 
   return (
@@ -105,9 +96,7 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
           />
 
           <div className="transform rotate-90 md:rotate-0 text-2xl self-end">
-            <button className="text-gray-500">
-              ⇆
-            </button>
+            <button className="text-gray-500">⇆</button>
           </div>
 
           <ConvertBlock
