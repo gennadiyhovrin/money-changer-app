@@ -3,28 +3,35 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ConvertBlock from "./ConvertBlock";
 
-const CurrencyConverter = ({ rates, date }) => {
-  const router = useRouter();
+const CurrencyConverter = ({ rates, date, history, setHistory }) => {
+ 
 
   const today = new Date();
   const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const maxDate = today.toISOString().split("T")[0];
   const minDate = sevenDaysAgo.toISOString().split("T")[0];
 
-  const [convertData, setConvertData] = useState(
-    localStorage.getItem("convertData")
-      ? JSON.parse(localStorage.getItem("convertData"))
-      : {
-          amount: 0,
-          convertedAmount: 0,
-          currencyFrom: "USD",
-          currencyTo: "EUR",
-          date: date,
-        }
-  );
+  let data = {
+    amount: 0,
+    convertedAmount: 0,
+    currencyFrom: "USD",
+    currencyTo: "EUR",
+    date: date,
+  };
+  // if (typeof window !== "undefined") {
+  //   if (localStorage.getItem("convertData")) {
+  //     data = { ...JSON.parse(localStorage.getItem("convertData")) };
+  //   }
+  // }
+
+  const router = useRouter();
+
+  const [convertData, setConvertData] = useState(data);
 
   const [trigger, setTrigger] = useState(false);
 
+  
+  
   useEffect(() => {
     if (convertData.date !== date) {
       router.push(`/converter/${convertData.date}`);
@@ -46,7 +53,7 @@ const CurrencyConverter = ({ rates, date }) => {
 
     setConvertData({
       ...convertData,
-      [trigger ? "amount" : "convertedAmount"]: amount * rate,
+      [trigger ? "amount" : "convertedAmount"]: (amount * rate).toFixed(2),
     });
   }, [
     convertData.amount,
@@ -55,6 +62,13 @@ const CurrencyConverter = ({ rates, date }) => {
     convertData.convertedAmount,
   ]);
 
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem("convertData"));
+    if (items) {
+      setConvertData({...items, date: date});
+    }
+  }, []);
+
   const handleChange = (event) => {
     const newData = {
       ...convertData,
@@ -62,17 +76,18 @@ const CurrencyConverter = ({ rates, date }) => {
     };
 
     setConvertData(newData);
-
-    localStorage.setItem("convertData", JSON.stringify(newData));
+    localStorage.setItem("convertData", JSON.stringify(convertData));
   };
 
   const convertCurrency = () => {
-    console.log("Convert currency here");
+    setHistory([...history, convertData]);
+    localStorage.setItem("history", JSON.stringify([...history, convertData]));
+  
   };
 
   return (
-    <div className="flex  justify-center items-center bg-[#f6f7ff]  py-24 ">
-      <div className="bg-white p-6 rounded-lg shadow-lg px-20 py-20">
+    <div className="flex  justify-center items-center bg-[#f6f7ff]  py-12 ">
+      <div className="bg-white p-6 rounded-lg shadow-lg px-10 py-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-10">
           Конвертер валют
         </h2>

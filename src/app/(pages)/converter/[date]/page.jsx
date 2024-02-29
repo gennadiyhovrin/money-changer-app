@@ -1,4 +1,4 @@
-import CurrencyConverter from "@/app/_components/CurrencyConverter";
+import HistoryWrapper from "@/app/_components/HistoryWrapper";
 import getCurencies from "@/app/_services/getCurencies";
 import isValidDate from "@/app/_lib/isValidDate";
 export default async function Converter({ params }) {
@@ -8,5 +8,5 @@ export default async function Converter({ params }) {
     isValidDate(date) ? date : new Date().toISOString().split("T")[0]
   );
 
-  return <CurrencyConverter rates={{...rates, EUR: 1}} date={date} />;
+  return <HistoryWrapper rates={{...rates, EUR: 1}} date={date} />;
 }

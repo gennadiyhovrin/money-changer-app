@@ -27,6 +27,8 @@ const ConvertBlock = ({
           currency={currency}
           handleChange={handleChange}
           selectName={selectName}
+          setTrigger={setTrigger}
+          from={from}
         />
       </div>
     </div>
