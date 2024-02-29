@@ -7,6 +7,9 @@ const ConvertBlock = ({
   title,
   inputName,
   selectName,
+  currencyList,
+  setTrigger,
+  from
 }) => {
   return (
     <div>
@@ -16,8 +19,11 @@ const ConvertBlock = ({
           amount={amount}
           handleChange={handleChange}
           inputName={inputName}
+          setTrigger={setTrigger}
+          from={from}
         />
         <SelectCurrency
+          currencyList={currencyList}
           currency={currency}
           handleChange={handleChange}
           selectName={selectName}

@@ -1,29 +1,60 @@
 "use client";
-
-import React, { useState } from "react";
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from "react";
 import ConvertBlock from "./ConvertBlock";
 
-const CurrencyConverter = () => {
-  // const host = "api.frankfurter.app";
-  // fetch(`https://${host}/latest?amount=10&from=GBP&to=USD`)
-  //   .then((resp) => resp.json())
-  //   .then((data) => {
-  //     alert(`10 GBP = ${data.rates.USD} USD`);
-  //   });
 
-  const [convertData, setConvertData] = useState({
-    amount: 1000,
-    convertedAmount: 38.7,
-    currencyFrom: "UAH",
-    currencyTo: "USD",
-    date: "2020-12-01",
-  });
+
+const CurrencyConverter =  ({rates, date}) => {
+  const router = useRouter()
+
 
   const today = new Date();
-  const sevenDaysAgo = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000));
-  const maxDate = today.toISOString().split('T')[0]; 
-  const minDate = sevenDaysAgo.toISOString().split('T')[0];
+  const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const maxDate = today.toISOString().split("T")[0];
+  const minDate = sevenDaysAgo.toISOString().split("T")[0];
+ 
 
+  const [convertData, setConvertData] = useState({
+    amount: 0,
+    convertedAmount: 0,
+    currencyFrom: "USD",
+    currencyTo: "EUR",
+    date: date,
+  });
+
+  const [trigger, setTrigger] = useState(false);
+
+  useEffect(() => {
+  if (convertData.date !== date) {
+      router.push(`/converter/${convertData.date}`)
+  }
+  }, [convertData.date]);
+  
+
+  useEffect(() => {
+   
+    const amount = !trigger ? convertData.amount : convertData.convertedAmount;
+
+    const currencyFrom = trigger
+      ? convertData.currencyTo
+      : convertData.currencyFrom;
+
+    const currencyTo = trigger
+      ? convertData.currencyFrom
+      : convertData.currencyTo;
+
+      const rate = rates[currencyTo] / rates[currencyFrom];
+
+      setConvertData({
+        ...convertData,
+        [trigger ? "amount" : "convertedAmount"]: amount * rate,
+      });
+
+   
+  }, [convertData.amount, convertData.currencyFrom, convertData.currencyTo, convertData.convertedAmount]);
+
+  
 
   const handleChange = (event) => {
     setConvertData({
@@ -33,8 +64,7 @@ const CurrencyConverter = () => {
   };
 
   const convertCurrency = () => {
-    // Implement the logic for currency conversion here
-    // For now, it's just a placeholder function
+   
     console.log("Convert currency here");
   };
 
@@ -52,6 +82,9 @@ const CurrencyConverter = () => {
             handleChange={handleChange}
             inputName="amount"
             selectName="currencyFrom"
+            currencyList={Object.keys(rates)}
+            setTrigger={setTrigger}
+            from={false}
           />
 
           <div className="transform rotate-90 md:rotate-0 text-2xl self-end">
@@ -67,6 +100,9 @@ const CurrencyConverter = () => {
             handleChange={handleChange}
             inputName="convertedAmount"
             selectName="currencyTo"
+            currencyList={Object.keys(rates)}
+            setTrigger={setTrigger}
+            from={true}
           />
         </div>
 
@@ -93,3 +129,4 @@ const CurrencyConverter = () => {
 };
 
 export default CurrencyConverter;
+

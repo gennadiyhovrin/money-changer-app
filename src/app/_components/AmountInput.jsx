@@ -1,6 +1,7 @@
-const AmountInput = ({ amount, handleChange, inputName }) => {
+const AmountInput = ({ amount, handleChange, inputName,setTrigger,from }) => {
   return (
     <input
+      onFocus={() => setTrigger(from)}
       type="number"
       name={inputName}
       value={amount}
