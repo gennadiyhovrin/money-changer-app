@@ -105,7 +105,7 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
           />
 
           <div className="transform rotate-90 md:rotate-0 text-2xl self-end">
-            <button onClick={convertCurrency} className="text-gray-500">
+            <button className="text-gray-500">
               ⇆
             </button>
           </div>
