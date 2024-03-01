@@ -1,5 +1,5 @@
 import Logo from "./Logo";
-import menuItems from "../_constants/menuItems";
+import menuItems from "../constants/menuItems";
 import NavigationItem from "./NavigationItem";
 import Image from "next/image";
 const Footer = () => (

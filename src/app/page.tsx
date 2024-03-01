@@ -1,4 +1,4 @@
-import CurrencyConverterSection from "./_components/CurrencyConverterSection";
+import CurrencyConverterSection from "../components/CurrencyConverterSection";
 
 export default function Home() {
   return (

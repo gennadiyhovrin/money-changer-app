@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import ConvertBlock from "./ConvertBlock";
 import getCurencies from "../actions/getCurencies";
-getCurencies("2022-09-08");
-const CurrencyConverter = ({ history, setHistory }) => {
+import { useApplicationStore } from "@/app/_stores/aplication.store";
+
+const CurrencyConverter = () => {
   const today = new Date();
   const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const maxDate = today.toISOString().split("T")[0];
@@ -16,6 +17,8 @@ const CurrencyConverter = ({ history, setHistory }) => {
     currencyTo: "EUR",
     date: today.toISOString().split("T")[0],
   };
+
+  const history = useApplicationStore((state) => state.history);
 
   const [rates, setRates] = useState(false);
 
@@ -79,8 +82,7 @@ const CurrencyConverter = ({ history, setHistory }) => {
   };
 
   const convertCurrency = () => {
-    setHistory([...history, convertData]);
-    localStorage.setItem("history", JSON.stringify([...history, convertData]));
+    useApplicationStore.setState({ history: [...history, convertData] })
   };
 
   return (
