@@ -2,7 +2,7 @@
 import CurrencyConverter from "./CurrencyConverter";
 import ConversionHistory from "./ConversionHistory";
 import { useEffect, useState } from "react";
-const HistoryWrapper = ({ rates, date }) => {
+const HistoryWrapper = () => {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
@@ -13,12 +13,7 @@ const HistoryWrapper = ({ rates, date }) => {
   }, []);
   return (
     <>
-      <CurrencyConverter
-        rates={rates}
-        date={date}
-        history={history}
-        setHistory={setHistory}
-      />
+      <CurrencyConverter history={history} setHistory={setHistory} />
       <ConversionHistory history={history} setHistory={setHistory} />
     </>
   );

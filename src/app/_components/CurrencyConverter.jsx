@@ -1,9 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import ConvertBlock from "./ConvertBlock";
-
-const CurrencyConverter = ({ rates, date, history, setHistory }) => {
+import getCurencies from "../actions/getCurencies";
+getCurencies("2022-09-08");
+const CurrencyConverter = ({ history, setHistory }) => {
   const today = new Date();
   const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
   const maxDate = today.toISOString().split("T")[0];
@@ -14,22 +14,29 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
     convertedAmount: 0,
     currencyFrom: "USD",
     currencyTo: "EUR",
-    date: date,
+    date: today.toISOString().split("T")[0],
   };
 
-  const router = useRouter();
+  const [rates, setRates] = useState(false);
 
   const [convertData, setConvertData] = useState(data);
 
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
-    if (convertData.date !== date) {
-      router.push(`/converter/${convertData.date}`);
-    }
+    const updateRates = async () => {
+      const { rates } = await getCurencies(convertData.date);
+      setRates({ ...rates, EUR: 1 });
+    };
+
+    updateRates();
   }, [convertData.date]);
 
   useEffect(() => {
+    if (!rates) {
+      return;
+      
+    }
     const amount = !trigger ? convertData.amount : convertData.convertedAmount;
 
     const currencyFrom = trigger
@@ -51,12 +58,13 @@ const CurrencyConverter = ({ rates, date, history, setHistory }) => {
     convertData.currencyFrom,
     convertData.currencyTo,
     convertData.convertedAmount,
+    rates,
   ]);
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("convertData"));
     if (items) {
-      setConvertData({ ...items, date: date });
+      setConvertData(items);
     }
   }, []);
 

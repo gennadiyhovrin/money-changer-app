@@ -1,5 +1,6 @@
 async function getCurencies(date) {
     try {
+      "use server";
       const res = await fetch("https://api.frankfurter.app/" + date);
   
       if (!res.ok) {
